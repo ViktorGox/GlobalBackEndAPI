@@ -1,6 +1,6 @@
-﻿using GlobalBackEndAPI.RegressionTesting.Data;
-using GlobalBackEndAPI.RegressionTesting.Models;
+﻿using GlobalBackEndAPI.RegressionTesting.Models;
 using GlobalBackEndAPI.RegressionTesting.Repositories.Interfaces;
+using GlobalBackEndAPI.RegressionTesting.SetUp;
 
 namespace GlobalBackEndAPI.RegressionTesting.Repositories
 {
@@ -15,12 +15,12 @@ namespace GlobalBackEndAPI.RegressionTesting.Repositories
 
         public Test GetTest(int id)
         {
-            return _context.Tests.Where(t => t.Id == id).FirstOrDefault();
+            return _context.Tests.Where(t => t.TestId == id).FirstOrDefault();
         }
 
         public ICollection<Test> GetTests()
         {
-            return _context.Tests.OrderBy(t => t.Id).ToList();
+            return _context.Tests.OrderBy(t => t.TestId).ToList();
         }
     }
 }

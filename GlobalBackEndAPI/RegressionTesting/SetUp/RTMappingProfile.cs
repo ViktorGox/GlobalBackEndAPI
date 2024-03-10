@@ -2,7 +2,7 @@
 using GlobalBackEndAPI.RegressionTesting.DTO;
 using GlobalBackEndAPI.RegressionTesting.Models;
 
-namespace GlobalBackEndAPI.RegressionTesting
+namespace GlobalBackEndAPI.RegressionTesting.SetUp
 {
     public class RTMappingProfile : Profile
     {

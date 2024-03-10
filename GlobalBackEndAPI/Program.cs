@@ -1,37 +1,37 @@
-using GlobalBackEndAPI.RegressionTesting.Data;
-using GlobalBackEndAPI.RegressionTesting.Repositories;
-using GlobalBackEndAPI.RegressionTesting.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using GlobalBackEndAPI;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<ITestRepository, TestRepository>();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<RTDataContext>(options =>
+internal class Program
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("RegressionTesting"));
-});
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
+        builder.Services.AddControllers();
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        
+        SetUpManager.Configure(builder);
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+
+        var app = builder.Build();
+
+        SetUpManager.InitializeDatabases();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
