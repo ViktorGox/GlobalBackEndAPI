@@ -2,10 +2,17 @@
 
 namespace GlobalBackEndAPI
 {
+    /// <summary>
+    /// Finds system base classes. They must inherit <see cref="ISetUp"/>. 
+    /// </summary>
     public class SetUpManager
     {
         private static ICollection<ISetUp> _systems;
 
+        /// <summary>
+        /// Finds the classes which inherit <see cref="ISetUp"/> and saves them in a list, so they can be called later for the
+        /// <see cref="ISetUp.Configure(WebApplicationBuilder)"/> and <see cref="ISetUp.InitializeDB"/>
+        /// </summary>
         static SetUpManager()
         {
             _systems = new List<ISetUp>();
