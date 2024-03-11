@@ -13,8 +13,6 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
         private string? _connectionString;
         public void Configure(WebApplicationBuilder builder)
         {
-            CConsole.WriteSuccess(this, " was created!");
-
             _connectionString = builder.Configuration.GetConnectionString("RegressionTesting");
 
             RTDataContext.ConnectionString = _connectionString;
@@ -44,7 +42,6 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
                 {
                     using (var dbContext = new RTDataContext())
                     {
-                        CConsole.WriteWarning(this, type.Name);
                         string tableQuery = startUpInstance.TableGenerationQuery();
                         string fullQuery = "IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'" + type.Name +"') AND type in (N'U'))\n" + tableQuery;
                         dbContext.Database.ExecuteSqlRaw(fullQuery);
