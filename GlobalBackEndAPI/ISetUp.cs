@@ -9,7 +9,7 @@
     public interface ISetUp
     {
         /// <summary>
-        /// Called before the app has been built.
+        /// Called before the app has been built. Should set up scopes and DataContext. Provide connection string to the DataContext.
         /// </summary>
         void Configure(WebApplicationBuilder builder);
         /// <summary>
