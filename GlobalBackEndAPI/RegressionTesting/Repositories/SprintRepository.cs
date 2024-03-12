@@ -4,23 +4,23 @@ using GlobalBackEndAPI.RegressionTesting.SetUp;
 
 namespace GlobalBackEndAPI.RegressionTesting.Repositories
 {
-    public class TestRepository : ITestRepository
+    public class SprintRepository : ISprintRepository
     {
         private readonly RTDataContext _context;
-        public TestRepository(RTDataContext rtDataContext)
+        public SprintRepository(RTDataContext rtDataContext)
         {
             //TODO: Check if null
             _context = rtDataContext;
         }
 
-        public Test GetTest(int id)
+        public Sprint GetSprint(int id)
         {
-            return _context.Test.Where(t => t.TestId == id).FirstOrDefault();
+            return _context.Sprint.Where(t => t.SprintId == id).FirstOrDefault();
         }
 
-        public ICollection<Test> GetTests()
+        public ICollection<Sprint> GetSprints()
         {
-            return _context.Test.OrderBy(t => t.TestId).ToList();
+            return _context.Sprint.OrderBy(t => t.SprintId).ToList();
         }
     }
 }

@@ -9,7 +9,10 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
         public RTMappingProfile()
         {
             CreateMap<Test, TestDTO>();
+            CreateMap<Sprint, SprintDTO>();
+
             CreateMap<TestDTO, Test>();
+            CreateMap<SprintDTO, Sprint>();
         }
     }
 }

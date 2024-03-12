@@ -1,10 +1,8 @@
-﻿using CustomConsole;
-using GlobalBackEndAPI.RegressionTesting.Repositories.Interfaces;
+﻿using GlobalBackEndAPI.RegressionTesting.Repositories.Interfaces;
 using GlobalBackEndAPI.RegressionTesting.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using GlobalBackEndAPI.DatabaseCreation;
-using GlobalBackEndAPI.RegressionTesting.Models;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
 {
@@ -18,6 +16,7 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
             RTDataContext.ConnectionString = _connectionString;
 
             builder.Services.AddScoped<ITestRepository, TestRepository>();
+            builder.Services.AddScoped<ISprintRepository, SprintRepository>();
             builder.Services.AddDbContext<RTDataContext>(options =>
             {
                 options.UseSqlServer(_connectionString);

@@ -8,7 +8,8 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
     /// </summary>
     public class RTDataContext : DbContext
     {
-        public DbSet<Test> Tests { get; set; }
+        public DbSet<Test> Test { get; set; }
+        public DbSet<Sprint> Sprint { get; set; }
 
         private static string? s_connectionString;
 
