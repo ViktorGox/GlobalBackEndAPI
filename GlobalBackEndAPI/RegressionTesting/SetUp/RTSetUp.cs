@@ -26,7 +26,7 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
 
         public void InitializeDB()
         {
-            _ = new QueryGenerator(DataFetcher.FetchData("GlobalBackEndAPI.RegressionTesting.Models"));
+            TableQueryGenerator queryGenerator = new(DataFetcher.FetchData("GlobalBackEndAPI.RegressionTesting.Models"));
 
             // TODO: DROP THEM FIRST
             Assembly assembly = Assembly.GetExecutingAssembly();
