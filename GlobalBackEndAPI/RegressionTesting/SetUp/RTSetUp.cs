@@ -3,6 +3,8 @@ using GlobalBackEndAPI.RegressionTesting.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using GlobalBackEndAPI.DatabaseCreation;
+using GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator;
+using CustomConsole;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
 {
@@ -25,6 +27,12 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
 
         public void InitializeDB()
         {
+            ICollection<EntityData> data = DataFetcher.FetchData("GlobalBackEndAPI.RegressionTesting.Models");
+            foreach (EntityData entity in data)
+            {
+                Console.WriteLine(entity);
+            }
+
             // TODO: DROP THEM FIRST
             Assembly assembly = Assembly.GetExecutingAssembly();
 

@@ -1,0 +1,79 @@
+﻿using GlobalBackEndAPI.DatabaseCreation.Attributes;
+using System.Reflection;
+
+namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
+{
+    public static class DataFetcher
+    {
+        public static ICollection<EntityData> FetchData(string targetNamespace)
+        {
+            if (string.IsNullOrWhiteSpace(targetNamespace) || !targetNamespace.ToLower().Contains("models"))
+            {
+                throw new ArgumentException("Possibly wrong target namespace. Namespaces which contain entity templates must include" +
+                    " \"Models\". Provided namespace: " + targetNamespace);
+            }
+
+            List<EntityData> data = new List<EntityData>();
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            IEnumerable<Type> modelTypes = assembly.GetTypes().Where(t => t.Namespace == targetNamespace && !t.IsInterface && !t.IsAbstract);
+
+            foreach (Type type in modelTypes)
+            {
+                EntityData entityData = new();
+                object? instance = Activator.CreateInstance(type) ??
+                    throw new Exception("Could not create instance of model class " + type + "! Cannot get default values without an instance!");
+                FetchPropertyInfo(type, instance, entityData);
+                FetchFieldInfo(type, instance, entityData);
+                data.Add(entityData);
+            }
+
+            return data;
+        }
+
+        private static void FetchPropertyInfo(Type type, object instance, EntityData entityData)
+        {
+            foreach (PropertyInfo property in type.GetProperties())
+            {
+                ColumnData columnData = new();
+
+                ForeignKeyAttribute? attribute = (ForeignKeyAttribute?) property.GetCustomAttribute(typeof(ForeignKeyAttribute));
+
+                if (attribute is not null)
+                {
+                    columnData.ForeignKey(attribute.ForeignTableKey);
+                    entityData.AddForeignKey(attribute.ForeignTable);
+                } 
+                else
+                {
+                    columnData.SetName(property.Name);
+                }
+                columnData.SetType(property.PropertyType);
+
+                object? defaultValue = property.GetValue(instance);
+                if (defaultValue is not null)
+                {
+                    columnData.SetDefault(defaultValue);
+                }
+                if (Attribute.IsDefined(property, typeof(NullableAttribute))) columnData.Nullable();
+                if (Attribute.IsDefined(property, typeof(PrimaryKeyAttribute))) columnData.PrimaryKey();
+                if (Attribute.IsDefined(property, typeof(UniqueAttribute))) columnData.Unique();
+                entityData.AddColumn(columnData);
+            }
+        }
+
+        private static void FetchFieldInfo(Type type, object instance, EntityData entityData)
+        {
+            //// Get all public fields of the class
+            //FieldInfo[] fields = type.GetFields();
+
+            //// Print information about each field
+            //foreach (FieldInfo field in fields)
+            //{
+            //    Console.WriteLine($"{type} ->  Field Name: {field.Name}");
+            //    Console.WriteLine($"{type} ->  Field Type: {field.FieldType}");
+            //    //Console.WriteLine($"Field Value: {field.GetValue(-)}");
+            //}
+        }
+    }
+}
