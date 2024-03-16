@@ -6,7 +6,7 @@ namespace GlobalBackEndAPI.Discord
     {
         public void Configure(WebApplicationBuilder builder)
         {
-            CConsole.WriteSuccess(this, " was created!");
+            CConsole.WriteSuccess("was created!");
         }
 
         public void InitializeDB()
