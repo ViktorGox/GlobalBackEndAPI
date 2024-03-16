@@ -1,11 +1,13 @@
 ﻿using GlobalBackEndAPI.DatabaseCreation;
+using GlobalBackEndAPI.DatabaseCreation.Attributes;
 
 namespace GlobalBackEndAPI.RegressionTesting.Models
 {
     public class Sprint : ITableGeneration
     {
+        [PrimaryKey]
         public int SprintId { get; set; }
-        public required string Title { get; set; }
+        public string? Title { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 

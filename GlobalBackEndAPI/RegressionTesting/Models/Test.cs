@@ -1,14 +1,17 @@
 ﻿using GlobalBackEndAPI.DatabaseCreation;
+using GlobalBackEndAPI.DatabaseCreation.Attributes;
 
 namespace GlobalBackEndAPI.RegressionTesting.Models
 {
     public class Test : ITableGeneration
     {
+        [PrimaryKey]
         public int TestId { get; set; }
-        public required string Name { get; set; }
-        public required string Description { get; set; }
-        public DateTime LastUpdate { get; set; }
-        public DateTime CreatedOn { get; set; }
+        public string? Name { get; set; }
+        [Nullable]
+        public string? Description { get; set; }
+        public DateTime LastUpdate { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
 
         public string TableGenerationQuery()
         {
