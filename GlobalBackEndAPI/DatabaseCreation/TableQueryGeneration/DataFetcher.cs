@@ -3,8 +3,16 @@ using System.Reflection;
 
 namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 {
+    /// <summary>
+    /// Used to gather data from model classes, to be used for creating a table query.
+    /// </summary>
     public static class DataFetcher
     {
+        /// <summary>
+        /// Looks through a specified Model directory, and fetches the data about fields and properties. Targeted namespace must contain Models in 
+        /// the name. All classes within the Model namespace must be instantiatable. Returns a collection of <see cref="EntityData"/>, an element for 
+        /// each class within the Model namespace.
+        /// </summary>
         public static ICollection<EntityData> FetchData(string targetNamespace)
         {
             if (string.IsNullOrWhiteSpace(targetNamespace) || !targetNamespace.ToLower().Contains("models"))
