@@ -20,7 +20,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
                 CConsole.WriteWarning("Attempting to set name of a column already assigned foreign key!");
                 return;
             }
-            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Name cannot be empty!");
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             Name = name;
         }
 
@@ -69,13 +69,14 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 
         public override string ToString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             stringBuilder.Append("Name: ").Append(Name);
             stringBuilder.Append(" Type: ").Append(Type?.ToString());
             stringBuilder.Append(" Default: ").Append(DefaultValue);
             stringBuilder.Append(" IsNullable: ").Append(IsNullable);
             stringBuilder.Append(" IsUnique: ").Append(IsUnique);
             stringBuilder.Append(" IsPrimary: ").Append(IsPrimaryKey);
+            stringBuilder.Append(" IsForeignKey: ").Append(IsForeignKey);
             return stringBuilder.ToString();
         }
     }

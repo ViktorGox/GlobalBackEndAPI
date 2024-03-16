@@ -13,7 +13,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
                     " \"Models\". Provided namespace: " + targetNamespace);
             }
 
-            List<EntityData> data = new List<EntityData>();
+            List<EntityData> data = [];
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             IEnumerable<Type> modelTypes = assembly.GetTypes().Where(t => t.Namespace == targetNamespace && !t.IsInterface && !t.IsAbstract);
@@ -42,13 +42,17 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
                 if (attribute is not null)
                 {
                     columnData.ForeignKey(attribute.ForeignTableKey);
-                    entityData.AddForeignKey(attribute.ForeignTable);
-                } 
+                    if(columnData.Name is not null)
+                    {
+                        entityData.AddForeignKey(new ForeignKeyData(columnData.Name, attribute.ForeignTable, attribute.ForeignTableKey, attribute.CustomSetting));
+                    }
+                    columnData.SetType(typeof(int));
+                }
                 else
                 {
                     columnData.SetName(property.Name);
+                    columnData.SetType(property.PropertyType);
                 }
-                columnData.SetType(property.PropertyType);
 
                 object? defaultValue = property.GetValue(instance);
                 if (defaultValue is not null)

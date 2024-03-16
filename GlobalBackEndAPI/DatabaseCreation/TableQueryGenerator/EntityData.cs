@@ -4,8 +4,8 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 {
     public class EntityData
     {
-        private List<ColumnData> _columns;
-        private List<string> _foreignKeys;
+        private readonly List<ColumnData> _columns;
+        private readonly List<ForeignKeyData> _foreignKeys;
         internal EntityData()
         {
             _columns = [];
@@ -17,22 +17,32 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
             _columns.Add(column);
         }
 
-        public void AddForeignKey(string name)
+        public void AddForeignKey(ForeignKeyData data)
         {
-            _foreignKeys.Add(name);
+            _foreignKeys.Add(data);
         }
 
         public override string ToString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             stringBuilder.Append("Columns:\n{\n");
             foreach (ColumnData item in _columns)
             {
-                stringBuilder.Append(item.ToString()).Append("\n");
+                stringBuilder.Append(item.ToString()).Append('\n');
             }
             stringBuilder.Append('}');
 
             return stringBuilder.ToString();
+        }
+
+        public IReadOnlyList<ColumnData> GetColumnData()
+        {
+            return _columns;
+        }
+
+        public IReadOnlyList<ForeignKeyData> GetForeignKeys()
+        {
+            return _foreignKeys;
         }
     }
 }

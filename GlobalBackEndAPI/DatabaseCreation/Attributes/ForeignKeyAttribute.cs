@@ -1,17 +1,10 @@
 ﻿namespace GlobalBackEndAPI.DatabaseCreation.Attributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public class ForeignKeyAttribute : Attribute
+    public class ForeignKeyAttribute(string foreignTable, string foreignTableKey, string customSetting = "") : Attribute
     {
-        public string ForeignTable { get; }
-        public string ForeignTableKey { get; }
-        public string CustomSetting { get; }
-
-        public ForeignKeyAttribute(string foreignTable, string foreignTableKey, string customSetting = "")
-        {
-            ForeignTable = foreignTable;
-            ForeignTableKey = foreignTableKey;
-            CustomSetting = customSetting;
-        }
+        public string ForeignTable { get; } = foreignTable;
+        public string ForeignTableKey { get; } = foreignTableKey;
+        public string CustomSetting { get; } = customSetting;
     }
 }
