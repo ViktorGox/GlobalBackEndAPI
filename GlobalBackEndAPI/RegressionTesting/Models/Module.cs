@@ -1,17 +1,15 @@
-﻿//using GlobalBackEndAPI.DatabaseCreation;
+﻿
+using GlobalBackEndAPI.DatabaseCreation.Attributes;
 
-//namespace GlobalBackEndAPI.RegressionTesting.Models
-//{
-//    public class Module : ITableGeneration
-//    {
-//        public int ModuleId { get; set; }
-//        public required string Label { get; set; }
-//        public string TableGenerationQuery()
-//        {
-//            return "CREATE TABLE Module (" +
-//                   "ModuleId INT IDENTITY(1,1) PRIMARY KEY," +
-//                   "Label NVARCHAR(255) NOT NULL" +
-//                   ");";
-//        }
-//    }
-//}
+namespace GlobalBackEndAPI.RegressionTesting.Models
+{
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public class Module
+    {
+        [PrimaryKey]
+        public int ModuleId { get; set; }
+        [Unique]
+        public string Label { get; set; }
+    }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+}
