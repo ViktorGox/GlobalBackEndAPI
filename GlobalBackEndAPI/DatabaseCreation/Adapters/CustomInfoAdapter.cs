@@ -1,5 +1,6 @@
 ﻿using GlobalBackEndAPI.DatabaseCreation.Data;
-using Microsoft.AspNetCore.HttpLogging;
+using System.Runtime.ConstrainedExecution;
+using System.Text;
 
 namespace GlobalBackEndAPI.DatabaseCreation.Adapters
 {
@@ -25,37 +26,55 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
 
         public string Adapt(ColumnData columnData)
         {
+            // If it's a primary key, we do not care about other modifiers, even if they are enabled, they should not be applied.
             if (columnData.IsPrimaryKey) return " IDENTITY(1,1) PRIMARY KEY";
-            string final = "";
 
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(HandleNullable(columnData));
+            sb.Append(HandleUnique(columnData));
+            sb.Append(HandleDefaultValue(columnData));
+
+            return sb.ToString();
+        }
+
+        private string HandleNullable(ColumnData columnData)
+        {
             if (columnData.IsNullable)
             {
-                final += " NULL";
+                return " NULL";
             }
             else
             {
-                final += " NOT NULL"; // default
+                return " NOT NULL"; // default
             }
+        }
 
+        private string HandleUnique(ColumnData columnData)
+        {
             if (columnData.IsUnique)
             {
-                final += " UNIQUE";
+                return " UNIQUE";
             }
+            return "";
+        }
 
+        private string HandleDefaultValue(ColumnData columnData)
+        {
             if (columnData.DefaultValue is not null)
             {
-                final += " DEFAULT ";
+                StringBuilder sb = new StringBuilder();
+                sb.Append(" DEFAULT ");
                 if (columnData.Type == typeof(string) || columnData.Type == typeof(DateTime))
                 {
-                    final += '\'' + columnData.DefaultValue.ToString() + '\'';
+                    sb.Append('\'').Append(columnData.DefaultValue.ToString()).Append('\'');
                 }
                 else
                 {
-                    final += columnData.DefaultValue.ToString();
+                    sb.Append(columnData.DefaultValue.ToString());
                 }
             }
-
-            return final;
+            return "";
         }
     }
 }
