@@ -3,6 +3,10 @@ using GlobalBackEndAPI.DatabaseCreation.Data;
 
 namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 {
+    /// <summary>
+    /// Takes in <see cref="EntityData"/> and converts it into queries which can be used to generate tables. Requires a <see cref="ITypeAdapter"/>
+    /// and <see cref="ICustomInfoAdapter"/>.
+    /// </summary>
     public class TableQueryGenerator
     {
         private readonly ICollection<EntityData> _entities;
@@ -15,17 +19,12 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
             _customInfoAdapter = customInfoAdapter;
         }
 
+        /// <summary>
+        /// Generates queries based on the provided <see cref="EntityData"/> to the constructor. Does not include foreign keys. To generate foreign keys 
+        /// look into <see cref="TableAlterQueries"/>.
+        /// </summary>
+        /// <returns></returns>
         public List<string> TableMainQueries()
-        {
-            return GenerateTables();
-        }
-
-        public List<string> TableAlterQueries()
-        {
-            return AlterForeignKeys();
-        }
-
-        private List<string> GenerateTables()
         {
             List<string> _queries = new();
 
@@ -52,7 +51,11 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
             return _queries;
         }
 
-        private List<string> AlterForeignKeys()
+        /// <summary>
+        /// Generates queries which alter tables. To generate the query for a table look at <see cref="TableMainQueries"/>. Currently supports:
+        /// Foreign Key alterations.
+        /// </summary>
+        public List<string> TableAlterQueries()
         {
             List<string> _queries = new();
 

@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.HttpLogging;
 
 namespace GlobalBackEndAPI.DatabaseCreation.Adapters
 {
+    /// <summary>
+    /// Used to convert the <see cref="ColumnData"/> extra settings, anything other than name and type, into a string to be used for a query.
+    /// Uses singleton pattern, call <see cref="Instance"/> to use the <see cref="Adapt(ColumnData)"/>
+    /// </summary>
     public class CustomInfoAdapter : ICustomInfoAdapter
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
