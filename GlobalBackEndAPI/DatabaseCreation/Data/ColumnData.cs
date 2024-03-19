@@ -32,6 +32,11 @@ namespace GlobalBackEndAPI.DatabaseCreation.Data
         public void SetDefault(object value)
         {
             ArgumentNullException.ThrowIfNull(value);
+            if (IsUnique)
+            {
+                CConsole.WriteWarning("Attempting to set default when already assigned unique!");
+                return;
+            }
             DefaultValue = value;
         }
 
@@ -42,6 +47,11 @@ namespace GlobalBackEndAPI.DatabaseCreation.Data
 
         public void Unique()
         {
+            if (DefaultValue is not null)
+            {
+                CConsole.WriteWarning("Attempting to set unique when already assigned default value!");
+                return;
+            }
             IsUnique = true;
         }
 
