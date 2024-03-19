@@ -1,4 +1,5 @@
 ﻿using GlobalBackEndAPI.DatabaseCreation.Attributes;
+using GlobalBackEndAPI.DatabaseCreation.Data;
 using System.Reflection;
 
 namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator

@@ -1,6 +1,7 @@
 ﻿using System.Text;
+using GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator;
 
-namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
+namespace GlobalBackEndAPI.DatabaseCreation.Data
 {
     /// <summary>
     /// Holds information for entities (tables). Contains <see cref="ColumnData"/> and <see cref="ForeignKeyData"/>.
@@ -10,7 +11,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
     /// </summary>
     public class EntityData
     {
-        public string Name {  get; set; }
+        public string Name { get; set; }
         private readonly List<ColumnData> _columns;
         private readonly List<ForeignKeyData> _foreignKeys;
         internal EntityData()

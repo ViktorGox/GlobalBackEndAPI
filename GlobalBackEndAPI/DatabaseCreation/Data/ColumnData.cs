@@ -1,6 +1,6 @@
 ﻿using CustomConsole;
 
-namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
+namespace GlobalBackEndAPI.DatabaseCreation.Data
 {
     public class ColumnData
     {
@@ -47,7 +47,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 
         public void PrimaryKey()
         {
-            if(IsForeignKey)
+            if (IsForeignKey)
             {
                 CConsole.WriteWarning("Attempting to set a column as primary key when it was already assigned foreign key!");
                 return;

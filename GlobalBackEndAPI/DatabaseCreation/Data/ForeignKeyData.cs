@@ -1,4 +1,4 @@
-﻿namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
+﻿namespace GlobalBackEndAPI.DatabaseCreation.Data
 {
     /// <summary>
     /// Data class which holds information about foreign keys. Intended to be used in combination with <see cref="Attributes.ForeignKeyAttribute"/>

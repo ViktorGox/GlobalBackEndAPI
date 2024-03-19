@@ -1,4 +1,6 @@
-﻿namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
+﻿using GlobalBackEndAPI.DatabaseCreation.Data;
+
+namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 {
     public class TableQueryGenerator
     {
@@ -19,6 +21,7 @@
                 {
                     query += AddColumn(columnData);
                 }
+                _tables.Add(query);
             }
             return _tables;
         }
