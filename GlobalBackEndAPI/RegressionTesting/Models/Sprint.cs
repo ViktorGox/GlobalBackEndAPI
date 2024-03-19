@@ -1,24 +1,15 @@
-﻿using GlobalBackEndAPI.DatabaseCreation;
-using GlobalBackEndAPI.DatabaseCreation.Attributes;
+﻿using GlobalBackEndAPI.DatabaseCreation.Attributes;
 
 namespace GlobalBackEndAPI.RegressionTesting.Models
 {
-    public class Sprint : ITableGeneration
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public class Sprint
     {
         [PrimaryKey]
         public int SprintId { get; set; }
-        public string? Title { get; set; }
+        public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-
-        public string TableGenerationQuery()
-        {
-            return "CREATE TABLE Sprint (" +
-                   "SprintId INT IDENTITY(1,1) PRIMARY KEY," +
-                   "Title NVARCHAR(255) NOT NULL," +
-                   "StartDate DATE NOT NULL," +
-                   "EndDate DATE NOT NULL," +
-                   ");";
-        }
     }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 }

@@ -31,29 +31,6 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
             TableQueryGenerator queryGenerator = new(DataFetcher.FetchData("GlobalBackEndAPI.RegressionTesting.Models"), TypeAdapter.Instance, CustomInfoAdapter.Instance);
             List<string> tables = queryGenerator.GenerateMainTables();
             tables.ForEach(t => CConsole.WriteSuccess(t));
-
-            // TODO: DROP THEM FIRST
-            Assembly assembly = Assembly.GetExecutingAssembly();
-
-            string targetNamespace = "GlobalBackEndAPI.RegressionTesting.Models";
-
-            var modelTypes = assembly.GetTypes().Where(t => t.Namespace == targetNamespace && !t.IsInterface && !t.IsAbstract);
-
-            // TODO: Definitely needs refactoring.
-
-            foreach (var type in modelTypes)
-            {
-                // Useless instance is created, but that will be resolved when the dynamic table creation is implemented.
-                if (Activator.CreateInstance(type) is ITableGeneration startUpInstance)
-                {
-                    using (var dbContext = new RTDataContext())
-                    {
-                        string tableQuery = startUpInstance.TableGenerationQuery();
-                        string fullQuery = "IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'" + type.Name +"') AND type in (N'U'))\n" + tableQuery;
-                        dbContext.Database.ExecuteSqlRaw(fullQuery);
-                    }
-                }
-            }
         }
     }
 }

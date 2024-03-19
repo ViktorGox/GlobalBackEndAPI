@@ -1,20 +1,14 @@
-﻿using GlobalBackEndAPI.DatabaseCreation;
-using GlobalBackEndAPI.DatabaseCreation.Attributes;
+﻿using GlobalBackEndAPI.DatabaseCreation.Attributes;
 
 namespace GlobalBackEndAPI.RegressionTesting.Models
 {
-    public class Role : ITableGeneration
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public class Role
     {
         [PrimaryKey]
         public int RoleId { get; set; }
         [Unique]
-        public string? Name { get; set; }
-        public string TableGenerationQuery()
-        {
-            return "CREATE TABLE Role (" +
-                   "RoleId INT IDENTITY(1,1) PRIMARY KEY," +
-                   "Name NVARCHAR(255) NOT NULL" +
-                   ");";
-        }
+        public string Name { get; set; }
     }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 }
