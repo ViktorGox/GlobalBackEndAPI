@@ -29,6 +29,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
             foreach (Type type in modelTypes)
             {
                 EntityData entityData = new();
+                entityData.Name = type.Name;
                 object? instance = Activator.CreateInstance(type) ??
                     throw new Exception("Could not create instance of model class " + type + "! Cannot get default values without an instance!");
                 FetchPropertyInfo(type, instance, entityData);

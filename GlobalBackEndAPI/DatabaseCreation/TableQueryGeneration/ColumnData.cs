@@ -1,5 +1,4 @@
 ﻿using CustomConsole;
-using System.Text;
 
 namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 {
@@ -65,19 +64,6 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
             }
             Name = foreignTableKey + "Id";
             IsForeignKey = true;
-        }
-
-        public override string ToString()
-        {
-            StringBuilder stringBuilder = new();
-            stringBuilder.Append("Name: ").Append(Name);
-            stringBuilder.Append(" Type: ").Append(Type?.ToString());
-            stringBuilder.Append(" Default: ").Append(DefaultValue);
-            stringBuilder.Append(" IsNullable: ").Append(IsNullable);
-            stringBuilder.Append(" IsUnique: ").Append(IsUnique);
-            stringBuilder.Append(" IsPrimary: ").Append(IsPrimaryKey);
-            stringBuilder.Append(" IsForeignKey: ").Append(IsForeignKey);
-            return stringBuilder.ToString();
         }
     }
 }

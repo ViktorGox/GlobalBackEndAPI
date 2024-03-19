@@ -10,10 +10,12 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
     /// </summary>
     public class EntityData
     {
+        public string Name {  get; set; }
         private readonly List<ColumnData> _columns;
         private readonly List<ForeignKeyData> _foreignKeys;
         internal EntityData()
         {
+            Name = "";
             _columns = [];
             _foreignKeys = [];
         }
@@ -26,19 +28,6 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
         public void AddForeignKey(ForeignKeyData data)
         {
             _foreignKeys.Add(data);
-        }
-
-        public override string ToString()
-        {
-            StringBuilder stringBuilder = new();
-            stringBuilder.Append("Columns:\n{\n");
-            foreach (ColumnData item in _columns)
-            {
-                stringBuilder.Append(item.ToString()).Append('\n');
-            }
-            stringBuilder.Append('}');
-
-            return stringBuilder.ToString();
         }
 
         public IReadOnlyList<ColumnData> GetColumnData()
