@@ -5,6 +5,7 @@ using System.Reflection;
 using GlobalBackEndAPI.DatabaseCreation;
 using GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator;
 using CustomConsole;
+using GlobalBackEndAPI.DatabaseCreation.Adapters;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
 {
@@ -27,7 +28,7 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
 
         public void InitializeDB()
         {
-            TableQueryGenerator queryGenerator = new(DataFetcher.FetchData("GlobalBackEndAPI.RegressionTesting.Models"));
+            TableQueryGenerator queryGenerator = new(DataFetcher.FetchData("GlobalBackEndAPI.RegressionTesting.Models"), TypeAdapter.Instance);
             List<string> tables = queryGenerator.GenerateMainTables();
             tables.ForEach(t => CConsole.WriteSuccess(t));
 

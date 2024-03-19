@@ -4,8 +4,8 @@ namespace GlobalBackEndAPI.DatabaseCreation.Data
 {
     public class ColumnData
     {
-        public string? Name { get; private set; }
-        public Type? Type { get; private set; }
+        public string Name { get; private set; }
+        public Type Type { get; private set; }
         public object? DefaultValue { get; private set; }
         public bool IsNullable { get; private set; }
         public bool IsUnique { get; private set; }

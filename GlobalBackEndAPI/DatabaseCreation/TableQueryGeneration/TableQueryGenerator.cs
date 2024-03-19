@@ -1,14 +1,17 @@
-﻿using GlobalBackEndAPI.DatabaseCreation.Data;
+﻿using GlobalBackEndAPI.DatabaseCreation.Adapters;
+using GlobalBackEndAPI.DatabaseCreation.Data;
 
 namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 {
     public class TableQueryGenerator
     {
         private readonly ICollection<EntityData> _entities;
+        private readonly ITypeAdapter _typeAdapter;
         private readonly List<string> _tables;
-        public TableQueryGenerator(ICollection<EntityData> entityData)
+        public TableQueryGenerator(ICollection<EntityData> entityData, ITypeAdapter typeAdapter)
         {
             _entities = entityData;
+            _typeAdapter = typeAdapter;
             _tables = new();
         }
 
@@ -33,7 +36,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 
         private string AddColumn(ColumnData columnData)
         {
-            return columnData.Name + " " + columnData.Type;
+            return columnData.Name + " " + _typeAdapter.TypeToString(columnData.Type) + " ";
         }
     }
 }
