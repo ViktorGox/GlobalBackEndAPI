@@ -7,11 +7,13 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
     {
         private readonly ICollection<EntityData> _entities;
         private readonly ITypeAdapter _typeAdapter;
+        private readonly ICustomInfoAdapter _customInfoAdapter;
         private readonly List<string> _tables;
-        public TableQueryGenerator(ICollection<EntityData> entityData, ITypeAdapter typeAdapter)
+        public TableQueryGenerator(ICollection<EntityData> entityData, ITypeAdapter typeAdapter, ICustomInfoAdapter customInfoAdapter)
         {
             _entities = entityData;
             _typeAdapter = typeAdapter;
+            _customInfoAdapter = customInfoAdapter;
             _tables = new();
         }
 
@@ -20,10 +22,19 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
             foreach (EntityData entity in _entities)
             {
                 string query = GenerateHeader(entity);
-                foreach (ColumnData columnData in entity.GetColumnData())
+                IReadOnlyList<ColumnData> columnDataList = entity.GetColumnData();
+
+                for (int i = 0; i < columnDataList.Count; i++)
                 {
+                    ColumnData columnData = columnDataList[i];
                     query += AddColumn(columnData);
+                    query += _customInfoAdapter.Adapt(columnData);
+                    if (i < columnDataList.Count - 1)
+                    {
+                        query += ", ";
+                    }
                 }
+                query += ")";
                 _tables.Add(query);
             }
             return _tables;
@@ -31,12 +42,12 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 
         private string GenerateHeader(EntityData entityData)
         {
-            return "CREATE TABLE " + entityData.Name + " ( ";
+            return "CREATE TABLE " + entityData.Name + " (";
         }
 
         private string AddColumn(ColumnData columnData)
         {
-            return columnData.Name + " " + _typeAdapter.TypeToString(columnData.Type) + " ";
+            return columnData.Name + " " + _typeAdapter.TypeToString(columnData.Type);
         }
     }
 }

@@ -10,10 +10,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = new TypeAdapter();
-                }
+                _instance ??= new TypeAdapter();
                 return _instance;
             }
         }
