@@ -8,29 +8,32 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
         private readonly ICollection<EntityData> _entities;
         private readonly ITypeAdapter _typeAdapter;
         private readonly ICustomInfoAdapter _customInfoAdapter;
-        private readonly List<string> _queries;
         public TableQueryGenerator(ICollection<EntityData> entityData, ITypeAdapter typeAdapter, ICustomInfoAdapter customInfoAdapter)
         {
             _entities = entityData;
             _typeAdapter = typeAdapter;
             _customInfoAdapter = customInfoAdapter;
-            _queries = new();
         }
 
-        public List<string> GenerateMainTables()
+        public List<string> TableMainQueries()
         {
-            GenerateTables();
-            AlterForeignKeys();
-            return _queries;
+            return GenerateTables();
         }
 
-        private void GenerateTables()
+        public List<string> TableAlterQueries()
         {
+            return AlterForeignKeys();
+        }
+
+        private List<string> GenerateTables()
+        {
+            List<string> _queries = new();
+
             foreach (EntityData entity in _entities)
             {
                 IReadOnlyList<ColumnData> columnDataList = entity.GetColumnData();
 
-                string query = "CREATE TABLE " + entity.Name + " (";
+                string query = "CREATE TABLE " + AddName(entity.Name) + " (";
 
                 for (int i = 0; i < columnDataList.Count; i++)
                 {
@@ -45,10 +48,14 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
                 query += ")";
                 _queries.Add(query);
             }
+
+            return _queries;
         }
 
-        private void AlterForeignKeys()
+        private List<string> AlterForeignKeys()
         {
+            List<string> _queries = new();
+
             foreach (EntityData entity in _entities)
             {
                 IReadOnlyList<ForeignKeyData> foreignKeyData = entity.GetForeignKeys();
@@ -56,13 +63,28 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
                 for (int i = 0; i < foreignKeyData.Count; i++)
                 {
                     ForeignKeyData fd = foreignKeyData[i];
-                    string query = "ALTER TABLE " + entity.Name + " ADD FOREIGN KEY (" +
-                        fd.DomesticKey + ") REFERENCES " + fd.ForeignTable + "(" + 
+                    string query = "ALTER TABLE " + AddName(entity.Name) + " ADD FOREIGN KEY (" +
+                        fd.DomesticKey + ") REFERENCES " + fd.ForeignTable + "(" +
                         fd.ForeignKey + ") " + fd.CustomRule + ";";
 
                     _queries.Add(query);
                 }
             }
+
+            return _queries;
+        }
+
+        /// <summary>
+        /// Some names are not accepted, and this method fixes that.
+        /// List of edited names (1): User -> Users
+        /// </summary>
+        private static string AddName(string name)
+        {
+            if (name.ToLower() == "user")
+            {
+                return name + "s";
+            }
+            return name;
         }
     }
 }

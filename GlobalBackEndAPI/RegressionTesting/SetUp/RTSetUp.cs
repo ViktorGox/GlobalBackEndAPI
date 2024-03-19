@@ -29,8 +29,18 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
         public void InitializeDB()
         {
             TableQueryGenerator queryGenerator = new(DataFetcher.FetchData("GlobalBackEndAPI.RegressionTesting.Models"), TypeAdapter.Instance, CustomInfoAdapter.Instance);
-            List<string> tables = queryGenerator.GenerateMainTables();
-            tables.ForEach(t => CConsole.WriteSuccess(t));
+            List<string> mainQueries = queryGenerator.TableMainQueries();
+
+            foreach (string query in mainQueries)
+            {
+                RTDataContext.ExecuteSqlTableCreation(query);
+            }
+
+            List<string> alterQueries = queryGenerator.TableAlterQueries();
+            foreach (string query in alterQueries)
+            {
+                RTDataContext.ExecuteSqlRaw(query);
+            }
         }
     }
 }

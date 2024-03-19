@@ -1,5 +1,7 @@
-﻿using GlobalBackEndAPI.RegressionTesting.Models;
+﻿using CustomConsole;
+using GlobalBackEndAPI.RegressionTesting.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
 {
@@ -38,7 +40,7 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
         {
             if (string.IsNullOrWhiteSpace(s_connectionString))
             {
-                throw new Exception("Connection string was not set up. Set property, probably should be done in the SetUp class");
+                throw new Exception("Connection string was not set up. Set the property, probably should be done in the SetUp class");
             }
         }
 
@@ -48,6 +50,27 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
             {
                 optionsBuilder.UseSqlServer(s_connectionString);
             }
+        }
+
+        public static int ExecuteSqlRaw(string query)
+        {
+            using (var dbContext = new RTDataContext())
+            {
+                return dbContext.Database.ExecuteSqlRaw(query);
+            }
+        }
+
+        public static void ExecuteSqlTableCreation(string query)
+        {
+            string[] words = query.Split(' ');
+            string tableName = "";
+            if (words.Length >= 3)
+            {
+                tableName = words[2];
+            }
+            string fullQuery = "IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'" + tableName + "') AND type in (N'U')) " + query;
+            CConsole.WriteWarning(fullQuery);
+            ExecuteSqlRaw(fullQuery);
         }
     }
 }
