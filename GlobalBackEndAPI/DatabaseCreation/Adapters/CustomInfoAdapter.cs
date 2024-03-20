@@ -1,4 +1,5 @@
-﻿using GlobalBackEndAPI.DatabaseCreation.Data;
+﻿using CustomConsole;
+using GlobalBackEndAPI.DatabaseCreation.Data;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 
@@ -61,20 +62,29 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
 
         private string HandleDefaultValue(ColumnData columnData)
         {
+            StringBuilder sb = new StringBuilder();
             if (columnData.DefaultValue is not null)
             {
-                StringBuilder sb = new StringBuilder();
                 sb.Append(" DEFAULT ");
-                if (columnData.Type == typeof(string) || columnData.Type == typeof(DateTime))
+                if (columnData.Type == typeof(string))
                 {
                     sb.Append('\'').Append(columnData.DefaultValue.ToString()).Append('\'');
+                }
+                if (columnData.Type == typeof(DateTime))
+                {
+                    sb.Append(HandleDefaultValueException());
                 }
                 else
                 {
                     sb.Append(columnData.DefaultValue.ToString());
                 }
             }
-            return "";
+            return sb.ToString();
+        }
+
+        private string HandleDefaultValueException()
+        {
+            return " CURRENT_TIMESTAMP ";
         }
     }
 }

@@ -22,14 +22,15 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
         private TypeAdapter() { }
 
         /// <summary>
-        /// Converts a type into a string version accepted by Microsoft SQL Server. Only supports: <see cref="string"/>, <see cref="int"/>, <see cref=" bool"/>and <see cref="DateTime"/> currently. Can be easily expanded if needed. Throws <see cref="ArgumentOutOfRangeException"/> if type is not supported.
+        /// Converts a type into a string version accepted by Microsoft SQL Server. Only supports: <see cref="string"/>, <see cref="int"/>, <see cref=" bool"/>, <see cref="DateTime"/> and <see cref="DateOnly"/> currently. Can be easily expanded if needed. Throws <see cref="ArgumentOutOfRangeException"/> if type is not supported.
         /// </summary>
         public string TypeToString(Type type) => type switch
         {
             { } when type == typeof(string) => "NVARCHAR(255)",
             { } when type == typeof(int) => "INT",
             { } when type == typeof(bool) => "BOOLEAN",
-            { } when type == typeof(DateTime) => "DATE",
+            { } when type == typeof(DateTime) => "DATETIME",
+            { } when type == typeof(DateOnly) => "DATE",
             _ => throw new ArgumentOutOfRangeException(nameof(type), $"Not expected type: {type}")
         };
     }

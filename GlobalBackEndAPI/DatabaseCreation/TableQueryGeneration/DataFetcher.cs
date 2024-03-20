@@ -1,4 +1,5 @@
-﻿using GlobalBackEndAPI.DatabaseCreation.Attributes;
+﻿using CustomConsole;
+using GlobalBackEndAPI.DatabaseCreation.Attributes;
 using GlobalBackEndAPI.DatabaseCreation.Data;
 using System.Reflection;
 
@@ -31,44 +32,23 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
             {
                 EntityData entityData = new();
                 entityData.Name = type.Name;
-                object? instance = Activator.CreateInstance(type) ??
-                    throw new Exception("Could not create instance of model class " + type + "! Cannot get default values without an instance!");
-                FetchPropertyInfo(type, instance, entityData);
-                FetchFieldInfo(type, instance, entityData);
+                FetchPropertyInfo(type, entityData);
+                FetchFieldInfo(type, entityData);
                 data.Add(entityData);
             }
 
             return data;
         }
 
-        private static void FetchPropertyInfo(Type type, object instance, EntityData entityData)
+        private static void FetchPropertyInfo(Type type, EntityData entityData)
         {
             foreach (PropertyInfo property in type.GetProperties())
             {
                 ColumnData columnData = new();
 
-                ForeignKeyAttribute? attribute = (ForeignKeyAttribute?) property.GetCustomAttribute(typeof(ForeignKeyAttribute));
-
-                if (attribute is not null)
-                {
-                    columnData.ForeignKey(attribute.ForeignTableKey);
-                    if(columnData.Name is not null)
-                    {
-                        entityData.AddForeignKey(new ForeignKeyData(columnData.Name, attribute.ForeignTable, attribute.ForeignTableKey, attribute.CustomSetting));
-                    }
-                    columnData.SetType(typeof(int));
-                }
-                else
-                {
-                    columnData.SetName(property.Name);
-                    columnData.SetType(property.PropertyType);
-                }
-
-                object? defaultValue = property.GetValue(instance);
-                if (defaultValue is not null)
-                {
-                    columnData.SetDefault(defaultValue);
-                }
+              
+                HandleForeignKey(property, columnData, entityData);
+                HandleDefault(property, columnData);
                 if (Attribute.IsDefined(property, typeof(NullableAttribute))) columnData.Nullable();
                 if (Attribute.IsDefined(property, typeof(PrimaryKeyAttribute))) columnData.PrimaryKey();
                 if (Attribute.IsDefined(property, typeof(UniqueAttribute))) columnData.Unique();
@@ -76,7 +56,41 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
             }
         }
 
-        private static void FetchFieldInfo(Type type, object instance, EntityData entityData)
+        private static void HandleForeignKey(PropertyInfo property, ColumnData columnData, EntityData entityData)
+        {
+            ForeignKeyAttribute? attribute = (ForeignKeyAttribute?)property.GetCustomAttribute(typeof(ForeignKeyAttribute));
+
+            if (attribute is not null)
+            {
+                columnData.ForeignKey(attribute.ForeignTableKey);
+                if (columnData.Name is not null)
+                {
+                    entityData.AddForeignKey(new ForeignKeyData(columnData.Name, attribute.ForeignTable, attribute.ForeignTableKey, attribute.CustomSetting));
+                }
+                columnData.SetType(typeof(int));
+            }
+            else
+            {
+                columnData.SetName(property.Name);
+                columnData.SetType(property.PropertyType);
+            }
+        }
+
+        private static void HandleDefault(PropertyInfo property, ColumnData columnData)
+        {
+            DefaultValueAttribute? attribute = (DefaultValueAttribute?)property.GetCustomAttribute(typeof(DefaultValueAttribute));
+
+            if(attribute is not null) 
+            {
+                if (columnData.DefaultValue is string s && s.ToLower().Equals("now"))
+                {
+                    columnData.SetDefault("CURRENT_TIMESTAMP");
+                }
+                columnData.SetDefault(attribute.DefaultValue);
+            }
+        }
+
+        private static void FetchFieldInfo(Type type, EntityData entityData)
         {
             //// Get all public fields of the class
             //FieldInfo[] fields = type.GetFields();
