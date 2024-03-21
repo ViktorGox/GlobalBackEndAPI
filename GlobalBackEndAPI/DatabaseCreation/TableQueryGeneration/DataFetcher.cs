@@ -42,51 +42,49 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
 
         private static void FetchPropertyInfo(Type type, EntityData entityData)
         {
+            ColumnDataFactory columnDataFactory = new();
             foreach (PropertyInfo property in type.GetProperties())
             {
-                ColumnData columnData = new();
-
-              
-                HandleForeignKey(property, columnData, entityData);
-                HandleDefault(property, columnData);
-                if (Attribute.IsDefined(property, typeof(NullableAttribute))) columnData.Nullable();
-                if (Attribute.IsDefined(property, typeof(PrimaryKeyAttribute))) columnData.PrimaryKey();
-                if (Attribute.IsDefined(property, typeof(UniqueAttribute))) columnData.Unique();
-                entityData.AddColumn(columnData);
+                HandleForeignKey(property, columnDataFactory, entityData);
+                HandleDefault(property, columnDataFactory);
+                if (Attribute.IsDefined(property, typeof(NullableAttribute))) columnDataFactory.Nullable();
+                if (Attribute.IsDefined(property, typeof(PrimaryKeyAttribute))) columnDataFactory.PrimaryKey();
+                if (Attribute.IsDefined(property, typeof(UniqueAttribute))) columnDataFactory.Unique();
+                entityData.AddColumn(columnDataFactory.Finalize());
             }
         }
 
-        private static void HandleForeignKey(PropertyInfo property, ColumnData columnData, EntityData entityData)
+        private static void HandleForeignKey(PropertyInfo property, ColumnDataFactory columnDataFactory, EntityData entityData)
         {
             ForeignKeyAttribute? attribute = (ForeignKeyAttribute?)property.GetCustomAttribute(typeof(ForeignKeyAttribute));
 
             if (attribute is not null)
             {
-                columnData.ForeignKey(attribute.ForeignTableKey);
-                if (columnData.Name is not null)
+                columnDataFactory.ForeignKey(attribute.ForeignTableKey);
+                if (columnDataFactory.Name is not null)
                 {
-                    entityData.AddForeignKey(new ForeignKeyData(columnData.Name, attribute.ForeignTable, attribute.ForeignTableKey, attribute.CustomSetting));
+                    entityData.AddForeignKey(new ForeignKeyData(columnDataFactory.Name, attribute.ForeignTable, attribute.ForeignTableKey, attribute.CustomSetting));
                 }
-                columnData.SetType(typeof(int));
+                columnDataFactory.SetType(typeof(int));
             }
             else
             {
-                columnData.SetName(property.Name);
-                columnData.SetType(property.PropertyType);
+                columnDataFactory.SetName(property.Name);
+                columnDataFactory.SetType(property.PropertyType);
             }
         }
 
-        private static void HandleDefault(PropertyInfo property, ColumnData columnData)
+        private static void HandleDefault(PropertyInfo property, ColumnDataFactory columnDataFactory)
         {
             DefaultValueAttribute? attribute = (DefaultValueAttribute?)property.GetCustomAttribute(typeof(DefaultValueAttribute));
 
-            if(attribute is not null) 
+            if (attribute is not null)
             {
-                if (columnData.DefaultValue is string s && s.ToLower().Equals("now"))
+                if (columnDataFactory.DefaultValue is string s && s.ToLower().Equals("now"))
                 {
-                    columnData.SetDefault("CURRENT_TIMESTAMP");
+                    columnDataFactory.SetDefault("CURRENT_TIMESTAMP");
                 }
-                columnData.SetDefault(attribute.DefaultValue);
+                columnDataFactory.SetDefault(attribute.DefaultValue);
             }
         }
 

@@ -1,7 +1,5 @@
-﻿using CustomConsole;
-using GlobalBackEndAPI.RegressionTesting.Models;
+﻿using GlobalBackEndAPI.RegressionTesting.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
 {
@@ -69,7 +67,6 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
                 tableName = words[2];
             }
             string fullQuery = "IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'" + tableName + "') AND type in (N'U')) " + query;
-            CConsole.WriteWarning(fullQuery);
             ExecuteSqlRaw(fullQuery);
         }
     }
