@@ -3,19 +3,16 @@
 namespace GlobalBackEndAPI
 {
     /// <summary>
-    /// Finds system base classes. They must inherit <see cref="ISetUp"/>. 
+    /// Used to start up the main classes for the separate systems. A system main class must inherit from <see cref="ISetUp"/>. <br></br>
+    /// Calls <see cref="Configure(WebApplicationBuilder)"/> before the <see cref="WebApplicationBuilder"/> has created the <see cref="WebApplication"/> in the <see cref="Program"/>. Calls <see cref="InitializeDatabases"/> right after the <see cref="WebApplicationBuilder"/> has created the <see cref="WebApplication"/>. System classes must be in a namespace. Database model classes must be placed in a .Model namespace.
     /// </summary>
     public class SetUpManager
     {
-        private static ICollection<ISetUp> _systems;
+        private readonly static ICollection<ISetUp> _systems;
 
-        /// <summary>
-        /// Finds the classes which inherit <see cref="ISetUp"/> and saves them in a list, so they can be called later for the
-        /// <see cref="ISetUp.Configure(WebApplicationBuilder)"/> and <see cref="ISetUp.InitializeDB"/>
-        /// </summary>
         static SetUpManager()
         {
-            _systems = new List<ISetUp>();
+            _systems = [];
             Assembly assembly = Assembly.GetExecutingAssembly();
             IEnumerable<Type> types = assembly.GetTypes().Where(t => typeof(ISetUp).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
 
@@ -41,11 +38,28 @@ namespace GlobalBackEndAPI
             }
         }
 
+        /// <summary>
+        /// Calls the <see cref="ISetUp.InitializeDB(string)"/> for the main system classes. The classes must be present in a namespace. The database model classes must be inside the same namespace followed by .Mode. The main class must be present in the parent directory or one directory inner. <code>System.SetUp</code> will be converted to <code>System.Model</code> <br></br>
+        /// Throws <see cref="InvalidOperationException"/> if the main system class does not have a namespace. Namespace is mandatory for the method to be able to find the model classes and other.
+        /// </summary>
         public static void InitializeDatabases()
         {
             foreach (ISetUp system in _systems)
             {
-                system.InitializeDB();
+                string? namespaceName = system.GetType().Namespace;
+
+                if (namespaceName is null) throw new InvalidOperationException("System class does not have a namespace. Program cannot function properly. Type: " + system.GetType());
+
+                if(namespaceName.EndsWith("SetUp"))
+                {
+                    int lastDotIndex = namespaceName.LastIndexOf('.');
+                    if (lastDotIndex != -1)
+                    {
+                        namespaceName = namespaceName[..lastDotIndex];
+                    }
+                }
+                namespaceName += ".Models";
+                system.InitializeDB(namespaceName);
             }
         }
     }

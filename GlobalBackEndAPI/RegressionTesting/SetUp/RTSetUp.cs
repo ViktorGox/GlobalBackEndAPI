@@ -1,10 +1,7 @@
 ﻿using GlobalBackEndAPI.RegressionTesting.Repositories.Interfaces;
 using GlobalBackEndAPI.RegressionTesting.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using GlobalBackEndAPI.DatabaseCreation;
 using GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator;
-using CustomConsole;
 using GlobalBackEndAPI.DatabaseCreation.Adapters;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
@@ -26,9 +23,9 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
             });
         }
 
-        public void InitializeDB()
+        public void InitializeDB(string targetNamespace)
         {
-            TableQueryGenerator queryGenerator = new(DataFetcher.FetchData("GlobalBackEndAPI.RegressionTesting.Models"), TypeAdapter.Instance, CustomInfoAdapter.Instance);
+            TableQueryGenerator queryGenerator = new(DataFetcher.FetchData(targetNamespace), TypeAdapter.Instance, CustomInfoAdapter.Instance);
             List<string> mainQueries = queryGenerator.TableMainQueries();
 
             foreach (string query in mainQueries)

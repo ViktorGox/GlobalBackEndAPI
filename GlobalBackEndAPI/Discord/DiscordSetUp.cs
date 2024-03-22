@@ -9,7 +9,7 @@ namespace GlobalBackEndAPI.Discord
             CConsole.WriteSuccess("was created!");
         }
 
-        public void InitializeDB()
+        public void InitializeDB(string targetNamespace)
         {
         }
     }

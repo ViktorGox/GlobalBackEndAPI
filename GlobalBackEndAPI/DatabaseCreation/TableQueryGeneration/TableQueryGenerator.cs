@@ -26,7 +26,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
         /// <returns></returns>
         public List<string> TableMainQueries()
         {
-            List<string> _queries = new();
+            List<string> _queries = [];
 
             foreach (EntityData entity in _entities)
             {
@@ -57,7 +57,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
         /// </summary>
         public List<string> TableAlterQueries()
         {
-            List<string> _queries = new();
+            List<string> _queries = [];
 
             foreach (EntityData entity in _entities)
             {

@@ -15,6 +15,6 @@
         /// <summary>
         /// Called after the app has been built.
         /// </summary>
-        void InitializeDB();
+        void InitializeDB(string targetNamespace);
     }
 }
