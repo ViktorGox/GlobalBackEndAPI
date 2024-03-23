@@ -28,10 +28,21 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
         {
             { } when type == typeof(string) => "NVARCHAR(255)",
             { } when type == typeof(int) => "INT",
-            { } when type == typeof(bool) => "BOOLEAN",
+            { } when type == typeof(bool) => "BIT",
             { } when type == typeof(DateTime) => "DATETIME",
             { } when type == typeof(DateOnly) => "DATE",
+            { } when type.IsGenericType => Handle(type),
             _ => throw new ArgumentOutOfRangeException(nameof(type), $"Not expected type: {type}")
         };
+
+        private string Handle(Type type)
+        {
+            Type? underlyingType = Nullable.GetUnderlyingType(type);
+            if (underlyingType == null)
+            {
+                throw new InvalidOperationException("Failed to type in basic list, and failed to find underlying type." + type);
+            }
+            return underlyingType.Name;
+        }
     }
 }
