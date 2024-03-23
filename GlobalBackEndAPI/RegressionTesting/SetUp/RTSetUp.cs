@@ -3,7 +3,6 @@ using GlobalBackEndAPI.RegressionTesting.Repositories;
 using Microsoft.EntityFrameworkCore;
 using GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator;
 using GlobalBackEndAPI.DatabaseCreation.Adapters;
-using CustomConsole;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
 {

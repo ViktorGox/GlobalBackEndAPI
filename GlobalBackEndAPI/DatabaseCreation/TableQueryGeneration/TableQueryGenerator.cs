@@ -86,14 +86,14 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
         private string GenerateAlterTableFK(ForeignKeyData fd, string entityName)
         {
             return "BEGIN ALTER TABLE " + AddName(entityName)
-                  + " ADD CONSTRAINT FK_" + GenerateConstraintName(entityName, fd)
+                  + " ADD CONSTRAINT " + GenerateConstraintName(entityName, fd)
                   + " FOREIGN KEY (" + fd.DomesticKey + ") "
                   + "REFERENCES " + AddName(fd.ForeignTable) + "(" + fd.ForeignKey + ") " + fd.CustomRule + "; END";
         }
 
         private string GenerateConstraintName(string entityName, ForeignKeyData fd)
         {
-            return entityName + "_" + fd.DomesticKey + "_" + fd.ForeignTable + "_" + fd.ForeignKey;
+            return "FK_" + entityName + "_" + fd.DomesticKey + "_" + fd.ForeignTable + "_" + fd.ForeignKey;
         }
 
         /// <summary>
