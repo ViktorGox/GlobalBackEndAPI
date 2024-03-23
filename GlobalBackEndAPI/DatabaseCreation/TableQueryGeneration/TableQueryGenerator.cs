@@ -1,4 +1,5 @@
-﻿using GlobalBackEndAPI.DatabaseCreation.Adapters;
+﻿using CustomConsole;
+using GlobalBackEndAPI.DatabaseCreation.Adapters;
 using GlobalBackEndAPI.DatabaseCreation.Data;
 
 namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
@@ -66,15 +67,33 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
                 for (int i = 0; i < foreignKeyData.Count; i++)
                 {
                     ForeignKeyData fd = foreignKeyData[i];
-                    string query = "ALTER TABLE " + AddName(entity.Name) + " ADD FOREIGN KEY (" +
-                        fd.DomesticKey + ") REFERENCES " + fd.ForeignTable + "(" +
-                        fd.ForeignKey + ") " + fd.CustomRule + ";";
+                    string query = GenerateAlterTableFKCheck(AddName(entity.Name), GenerateConstraintName(entity.Name, fd));
+                    query += GenerateAlterTableFK(fd, entity.Name);
 
                     _queries.Add(query);
                 }
             }
 
             return _queries;
+        }
+
+        private string GenerateAlterTableFKCheck(string tableName, string constraintName)
+        {
+            return "IF NOT EXISTS ( SELECT 1 FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE = 'FOREIGN KEY'" +
+                "AND TABLE_NAME = '" + tableName + "' AND CONSTRAINT_NAME = '" + constraintName + "')";
+        }
+
+        private string GenerateAlterTableFK(ForeignKeyData fd, string entityName)
+        {
+            return "BEGIN ALTER TABLE " + AddName(entityName)
+                  + " ADD CONSTRAINT FK_" + GenerateConstraintName(entityName, fd)
+                  + " FOREIGN KEY (" + fd.DomesticKey + ") "
+                  + "REFERENCES " + AddName(fd.ForeignTable) + "(" + fd.ForeignKey + ") " + fd.CustomRule + "; END";
+        }
+
+        private string GenerateConstraintName(string entityName, ForeignKeyData fd)
+        {
+            return entityName + "_" + fd.DomesticKey + "_" + fd.ForeignTable + "_" + fd.ForeignKey;
         }
 
         /// <summary>

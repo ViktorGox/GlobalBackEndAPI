@@ -1,4 +1,5 @@
-﻿using GlobalBackEndAPI.RegressionTesting.Models;
+﻿using CustomConsole;
+using GlobalBackEndAPI.RegressionTesting.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
@@ -8,8 +9,13 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
     /// </summary>
     public class RTDataContext : DbContext
     {
-        public DbSet<Test> Test { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Sprint> Sprint { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Step> Steps { get; set; }
+        public DbSet<Test> Test { get; set; }
+        public DbSet<User> Users { get; set; }
 
         private static string? s_connectionString;
 
@@ -54,6 +60,7 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
         {
             using (var dbContext = new RTDataContext())
             {
+                CConsole.WriteWarning(query);
                 return dbContext.Database.ExecuteSqlRaw(query);
             }
         }

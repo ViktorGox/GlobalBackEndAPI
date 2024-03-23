@@ -70,9 +70,14 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
                 {
                     sb.Append('\'').Append(columnData.DefaultValue.ToString()).Append('\'');
                 }
-                if (columnData.Type == typeof(DateTime))
+                else if (columnData.Type == typeof(DateTime))
                 {
-                    sb.Append(HandleDefaultValueException());
+                    sb.Append(" CURRENT_TIMESTAMP ");
+                }
+                else if (columnData.Type == typeof(bool))
+                {
+                    int value = (bool) columnData.DefaultValue ? 1 : 0;
+                    sb.Append(value + " ");
                 }
                 else
                 {
@@ -80,11 +85,6 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
                 }
             }
             return sb.ToString();
-        }
-
-        private string HandleDefaultValueException()
-        {
-            return " CURRENT_TIMESTAMP ";
         }
     }
 }
