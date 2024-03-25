@@ -1,0 +1,1 @@
+﻿insert into module (Label) values ('Main Page'), ('Log in Page'), ('Register Page'), ('Users Page'), ('Utility'), ('Other')

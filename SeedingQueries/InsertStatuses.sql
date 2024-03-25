@@ -1,0 +1,1 @@
+﻿insert into status (Label) values ('To do'), ('Success'), ('Blocker'), ('Bug')

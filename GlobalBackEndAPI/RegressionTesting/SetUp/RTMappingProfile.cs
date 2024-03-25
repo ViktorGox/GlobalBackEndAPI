@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using GlobalBackEndAPI.RegressionTesting.DTO;
 using GlobalBackEndAPI.RegressionTesting.Models;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
@@ -8,19 +7,22 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
     {
         public RTMappingProfile()
         {
-            CreateMap<Module, ModuleDTO>();
-            CreateMap<Role, RoleDTO>();
-            CreateMap<Sprint, SprintDTO>();
-            CreateMap<Status, StatusDTO>();
-            CreateMap<Step, StepDTO>();
-            CreateMap<Test, TestDTO>();
+            //CreateMap<Module, ModuleDTO>();
+            //CreateMap<Role, RoleDTO>();
+            //CreateMap<Sprint, SprintDTO>();
+            //CreateMap<Status, StatusDTO>();
+            //CreateMap<Step, StepDTO>();
+            //CreateMap<Test, TestDTO>();
+            //CreateMap<SprintTestRelation, SprintTestRelationDTO>();
 
-            CreateMap<ModuleDTO, Module>();
-            CreateMap<RoleDTO, Role>();
-            CreateMap<SprintDTO, Sprint>();
-            CreateMap<StatusDTO, Sprint>();
-            CreateMap<StepDTO, Step>();
-            CreateMap<TestDTO, Test>();
+            //CreateMap<ModuleDTO, Module>();
+            //CreateMap<RoleDTO, Role>();
+            //CreateMap<SprintDTO, Sprint>();
+            //CreateMap<StatusDTO, Sprint>();
+            //CreateMap<StepDTO, Step>();
+            //CreateMap<TestDTO, Test>();
+            //CreateMap<SprintTestRelationDTO, SprintTestRelation>();
+
         }
     }
 }
