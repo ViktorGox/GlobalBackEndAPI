@@ -31,6 +31,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
             { } when type == typeof(bool) => "BIT",
             { } when type == typeof(DateTime) => "DATETIME",
             { } when type == typeof(DateOnly) => "DATE",
+            { } when type == typeof(Guid) => "UNIQUEIDENTIFIER",
             { } when type.IsGenericType => Handle(type),
             _ => throw new ArgumentOutOfRangeException(nameof(type), $"Not expected type: {type}")
         };

@@ -28,7 +28,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.Adapters
         public string Adapt(ColumnData columnData)
         {
             // If it's a primary key, we do not care about other modifiers, even if they are enabled, they should not be applied.
-            if (columnData.IsPrimaryKey) return " IDENTITY(1,1) PRIMARY KEY";
+            if (columnData.IsPrimaryKey) return " PRIMARY KEY DEFAULT NEWID()";
 
             StringBuilder sb = new StringBuilder();
 

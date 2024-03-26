@@ -6,7 +6,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Models
     public class Test
     {
         [PrimaryKey]
-        public int TestId { get; set; }
+        public Guid TestId { get; set; }
         public string Name { get; set; }
         [Nullable]
         public string? Description { get; set; }

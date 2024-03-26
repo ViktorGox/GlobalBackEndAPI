@@ -14,7 +14,8 @@ namespace GlobalBackEndAPI.RegressionTesting.Repositories
 
         public Test? GetTest(int id)
         {
-            return _context.Test.Where(t => t.TestId == id).FirstOrDefault();
+            return null;
+            //return _context.Test.Where(t => t.TestId == id).FirstOrDefault();
         }
 
         public ICollection<Test> GetTests()
