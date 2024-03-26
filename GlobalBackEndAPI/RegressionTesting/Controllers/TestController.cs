@@ -19,7 +19,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
         [ProducesResponseType(200, Type = typeof(Test))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult GetTest(int testId)
+        public IActionResult GetTest(Guid testId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -78,7 +78,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteTest(int id) //TODO: what if I alter the test?
+        public IActionResult DeleteTest(Guid id) //TODO: what if I alter the test?
         {
             if (!ModelState.IsValid)
             {
@@ -110,7 +110,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateTestName(int id, [FromBody] TestPatchNameDTO body)
+        public IActionResult UpdateTestName(Guid id, [FromBody] TestPatchNameDTO body)
         {
             Test? test = _testRepository.GetTest(id);
 
@@ -138,7 +138,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
         [HttpPatch("{id}/description")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateTestDescription(int id, [FromBody] TestPatchDescriptionDTO body)
+        public IActionResult UpdateTestDescription(Guid id, [FromBody] TestPatchDescriptionDTO body)
         {
             Test? test = _testRepository.GetTest(id);
 

@@ -5,7 +5,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Repositories.Interfaces
     public interface ITestRepository
     {
         ICollection<Test> GetTests();
-        Test? GetTest(int id);
+        Test? GetTest(Guid id);
         bool CreateTest(Test test);
         bool UpdateTest(Test test);
         bool DeleteTest(Test test);

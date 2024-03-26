@@ -12,10 +12,9 @@ namespace GlobalBackEndAPI.RegressionTesting.Repositories
             _context = rtDataContext;
         }
 
-        public Test? GetTest(int id)
+        public Test? GetTest(Guid id)
         {
-            return null;
-            //return _context.Test.Where(t => t.TestId == id).FirstOrDefault();
+            return _context.Test.Where(t => t.TestId == id).FirstOrDefault();
         }
 
         public ICollection<Test> GetTests()
