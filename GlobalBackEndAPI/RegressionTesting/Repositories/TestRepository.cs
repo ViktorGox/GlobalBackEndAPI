@@ -30,8 +30,20 @@ namespace GlobalBackEndAPI.RegressionTesting.Repositories
 
         public bool Save()
         {
-            var saved = _context.SaveChanges();
+            int saved = _context.SaveChanges();
             return saved > 0;
+        }
+
+        public bool UpdateTest(Test test)
+        {
+            _context.Update(test);
+            return Save();
+        }
+
+        public bool DeleteTest(Test test)
+        {
+            _context.Remove(test);
+            return Save();
         }
     }
 }
