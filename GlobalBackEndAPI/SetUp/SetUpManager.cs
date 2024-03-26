@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace GlobalBackEndAPI
+namespace GlobalBackEndAPI.SetUp
 {
     /// <summary>
     /// Used to start up the main classes for the separate systems. A system main class must inherit from <see cref="ISetUp"/>. <br></br>
@@ -16,7 +16,7 @@ namespace GlobalBackEndAPI
             Assembly assembly = Assembly.GetExecutingAssembly();
             IEnumerable<Type> types = assembly.GetTypes().Where(t => typeof(ISetUp).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
 
-            if(types is null || types.Count() == 0)
+            if (types is null || types.Count() == 0)
             {
                 throw new Exception("Failed to find any classes extending ISetUp. No systems to handle. The program will do nothing.");
             }
@@ -50,7 +50,7 @@ namespace GlobalBackEndAPI
 
                 if (namespaceName is null) throw new InvalidOperationException("System class does not have a namespace. Program cannot function properly. Type: " + system.GetType());
 
-                if(namespaceName.EndsWith("SetUp"))
+                if (namespaceName.EndsWith("SetUp"))
                 {
                     int lastDotIndex = namespaceName.LastIndexOf('.');
                     if (lastDotIndex != -1)

@@ -1,4 +1,4 @@
-﻿namespace GlobalBackEndAPI
+﻿namespace GlobalBackEndAPI.SetUp
 {
     /// <summary>
     /// Inherited by classes which set up individual system and related database.
