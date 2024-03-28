@@ -20,18 +20,12 @@ namespace GlobalBackEndAPI.Encryption.Binder
             {
                 var requestBody = await reader.ReadToEndAsync();
 
-                var decryptedBody = Decrypt(requestBody);
+                var decryptedBody = new BasicEncryption().Decrypt(requestBody);
 
                 var deserializedData = DeserializeJson<T>(decryptedBody);
 
                 bindingContext.Result = ModelBindingResult.Success(deserializedData);
             }
-        }
-
-        private string Decrypt(string encryptedData)
-        {
-            CConsole.WriteSuccess("Encrypted data: " + encryptedData.Replace("Gingy", "Gongo"));
-            return encryptedData.Replace("Gingy", "Gongo");
         }
 
         private T DeserializeJson<T>(string json)
