@@ -3,9 +3,7 @@ using GlobalBackEndAPI.RegressionTesting.Repositories;
 using Microsoft.EntityFrameworkCore;
 using GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator;
 using GlobalBackEndAPI.DatabaseCreation.Adapters;
-using GlobalBackEndAPI.RegressionTesting.DTO.Test;
 using Newtonsoft.Json;
-using GlobalBackEndAPI.Encryption.Binder;
 using GlobalBackEndAPI.SetUp;
 
 namespace GlobalBackEndAPI.RegressionTesting.SetUp
@@ -17,12 +15,8 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
         {
             JsonSerializer jsonSerializer = new();
 
-            builder.Services.AddControllers(options =>
-            {
-                options.ModelBinderProviders.Insert(0, new BodyModelBinderProvider<TestPatchDescriptionDTO>(jsonSerializer));
-                options.ModelBinderProviders.Insert(0, new BodyModelBinderProvider<TestPatchNameDTO>(jsonSerializer));
-                options.ModelBinderProviders.Insert(0, new BodyModelBinderProvider<TestPostDTO>(jsonSerializer));
-            });
+            builder.Services.AddControllers();
+
 
             _connectionString = builder.Configuration.GetConnectionString("RegressionTesting");
 
