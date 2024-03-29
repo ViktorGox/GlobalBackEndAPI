@@ -6,10 +6,10 @@ namespace GlobalBackEndAPI.Encryption
 {
     public class BasicEncryption : IEncryption
     {
-        private readonly string _key;
-        public BasicEncryption(string key)
+        private static readonly string _key;
+        static BasicEncryption()
         {
-            _key = key;
+            _key = KeySetUp.GetKey();
         }
         public string Decrypt(string toDecrypt)
         {

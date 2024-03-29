@@ -20,7 +20,7 @@ namespace GlobalBackEndAPI.Encryption.Binder
             {
                 var requestBody = await reader.ReadToEndAsync();
 
-                var decryptedBody = new BasicEncryption("AAECAwQFBgcICQoL23222323").Decrypt(requestBody);
+                var decryptedBody = new BasicEncryption().Decrypt(requestBody);
 
                 var deserializedData = DeserializeJson<T>(decryptedBody);
 
