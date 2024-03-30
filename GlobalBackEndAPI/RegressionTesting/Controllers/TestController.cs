@@ -17,13 +17,12 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
 
         [HttpGet("{testId}")]
         [ProducesResponseType(200, Type = typeof(Test))]
-        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public IActionResult GetTest(Guid testId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            Test? test = _testRepository.GetTest(testId);
+            Test? test = _testRepository.Get(testId);
 
             if (test == null) return NotFound();
             return Ok(test);
@@ -64,7 +63,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
                 CreatedOn = DateTime.Now,
             };
 
-            if (!_testRepository.CreateTest(test))
+            if (!_testRepository.Create(test))
             {
                 ModelState.AddModelError("", "Yeh... It failed?");
                 return StatusCode(500, ModelState);
@@ -77,14 +76,14 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteTest(Guid id) //TODO: what if I alter the test?
+        public IActionResult DeleteTest(Guid id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Test? test = _testRepository.GetTest(id);
+            Test? test = _testRepository.Get(id);
 
             if (test is null)
             {
@@ -96,7 +95,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
                 }); 
             }
 
-            if (!_testRepository.DeleteTest(test))
+            if (!_testRepository.Delete(test))
             {
                 ModelState.AddModelError("", "Yeh... It failed?");
                 return StatusCode(500, ModelState);
@@ -111,7 +110,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
         [ProducesResponseType(404)]
         public IActionResult UpdateTestName(Guid id, [FromBody] TestPatchNameDTO body)
         {
-            Test? test = _testRepository.GetTest(id);
+            Test? test = _testRepository.Get(id);
 
             if (test is null)
             {
@@ -125,7 +124,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
 
             test.Name = body.Name;
 
-            if (!_testRepository.UpdateTest(test))
+            if (!_testRepository.Update(test))
             {
                 ModelState.AddModelError("", "Yeh... It failed?");
                 return StatusCode(500, ModelState);
@@ -139,7 +138,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
         [ProducesResponseType(404)]
         public IActionResult UpdateTestDescription(Guid id, [FromBody] TestPatchDescriptionDTO body)
         {
-            Test? test = _testRepository.GetTest(id);
+            Test? test = _testRepository.Get(id);
 
             if (test is null)
             {
@@ -148,7 +147,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
 
             test.Description = body.Description;
 
-            if (!_testRepository.UpdateTest(test))
+            if (!_testRepository.Update(test))
             {
                 ModelState.AddModelError("", "Yeh... It failed?");
                 return StatusCode(500, ModelState);

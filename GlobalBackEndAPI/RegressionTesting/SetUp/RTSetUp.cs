@@ -22,6 +22,7 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
             RTDataContext.ConnectionString = _connectionString;
 
             builder.Services.AddScoped<ITestRepository, TestRepository>();
+            builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 
             builder.Services.AddDbContext<RTDataContext>(options =>
             {

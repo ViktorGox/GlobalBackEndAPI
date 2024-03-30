@@ -10,6 +10,7 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
     public class RTDataContext : DbContext
     {
         public DbSet<Test> Test { get; set; }
+        public DbSet<Module> Module { get; set; }
 
         private static string? s_connectionString;
 

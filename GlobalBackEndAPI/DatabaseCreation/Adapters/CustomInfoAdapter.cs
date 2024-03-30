@@ -1,6 +1,4 @@
-﻿using CustomConsole;
-using GlobalBackEndAPI.DatabaseCreation.Data;
-using System.Runtime.ConstrainedExecution;
+﻿using GlobalBackEndAPI.DatabaseCreation.Data;
 using System.Text;
 
 namespace GlobalBackEndAPI.DatabaseCreation.Adapters
