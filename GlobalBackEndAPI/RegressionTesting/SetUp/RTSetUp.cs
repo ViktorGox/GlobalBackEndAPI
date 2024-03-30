@@ -17,7 +17,6 @@ namespace GlobalBackEndAPI.RegressionTesting.SetUp
 
             builder.Services.AddControllers();
 
-
             _connectionString = builder.Configuration.GetConnectionString("RegressionTesting");
 
             RTDataContext.ConnectionString = _connectionString;
