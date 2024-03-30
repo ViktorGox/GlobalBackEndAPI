@@ -33,7 +33,7 @@ namespace GlobalBackEndAPI.RegressionTesting.Controllers
         public IActionResult GetModules()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            ICollection<Module> modules = _moduleRepository.GetModules();
+            ICollection<Module> modules = _moduleRepository.GetCollection();
 
             return Ok(modules);
         }

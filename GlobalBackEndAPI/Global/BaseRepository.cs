@@ -9,10 +9,10 @@ namespace GlobalBackEndAPI.Global
     /// Requires two generic types. D is the database context, T is the model class. <br></br>
     /// For the get to work, the model class primary key must be named as follows: TableName + Id.
     /// </summary>
-    public class Repository<D, T> where D : DbContext
+    public class BaseRepository<D, T> : IBaseEntityRepository<T> where D : DbContext
     {
         protected readonly D _context;
-        public Repository(D rtDataContext)
+        public BaseRepository(D rtDataContext)
         {
             _context = rtDataContext;
         }

@@ -1,14 +1,9 @@
-﻿using GlobalBackEndAPI.RegressionTesting.Models;
+﻿using GlobalBackEndAPI.Global;
+using GlobalBackEndAPI.RegressionTesting.Models;
 
 namespace GlobalBackEndAPI.RegressionTesting.Repositories.Interfaces
 {
-    public interface IModuleRepository
+    public interface IModuleRepository : IBaseEntityRepository<Module>, IGetListRepository<Module>
     {
-        ICollection<Module> GetModules();
-        Module? Get(Guid id);
-        bool Create (Module module);
-        bool Update(Module module);
-        bool Delete(Module module);
-        bool Save();
     }
 }
