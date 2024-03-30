@@ -65,7 +65,7 @@ namespace GlobalBackEndAPI.DatabaseCreation.TableQueryGenerator
                 {
                     entityData.AddForeignKey(new ForeignKeyData(columnDataFactory.Name, attribute.ForeignTable, attribute.ForeignTableKey, attribute.CustomSetting));
                 }
-                columnDataFactory.SetType(typeof(int));
+                columnDataFactory.SetType(typeof(Guid));
             }
             else
             {
